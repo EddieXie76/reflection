@@ -42,7 +42,15 @@ public class ArrayReflectionTest {
         System.out.println(myClassArrayClass.getName());
     }
 
-    public Class getClass(String className) throws ClassNotFoundException {
+    @Test
+    public void testObtainingTheComponentTypeOfAnArray() throws Exception {
+        String[] strings = new String[3];
+        Class stringArrayClass = strings.getClass();
+        Class stringArrayComponentType = stringArrayClass.getComponentType();
+        System.out.println(stringArrayComponentType);
+    }
+
+    private Class getClass(String className) throws ClassNotFoundException {
         if("int" .equals(className)) return int.class;
         if("boolean" .equals(className)) return boolean.class;
         if("long".equals(className)) return long.class;
