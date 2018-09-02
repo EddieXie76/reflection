@@ -7,8 +7,6 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
-import java.util.stream.IntStream;
 
 public class DynamicProxyTest {
     private class TimingDynamicInvocationHandler implements InvocationHandler {
