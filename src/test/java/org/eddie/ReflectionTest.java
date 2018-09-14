@@ -1,15 +1,51 @@
 package org.eddie;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.lang.reflect.*;
 import java.util.stream.IntStream;
 
 public class ReflectionTest {
     public static final int COUNT = 100 * 1000 * 1000;
+
+    @Test
+    public void method() throws Exception {
+        for (Method method : MyClass.class.getMethods()) {
+            System.out.println(method.getName() + ":" + method.getReturnType());
+            for (Parameter parameter : method.getParameters()) {
+                System.out.println("\t" + parameter.getName() + ":" + parameter.getParameterizedType().getTypeName());
+            }
+        }
+    }
+
+    @Test
+    public void fields() throws Exception {
+        for (Field field : MyClass.class.getFields()) {
+            System.out.println(field.getName() + ":" + field.getType());
+        }
+    }
+
+    @Test
+    public void invokeMethod() throws Exception {
+        Method getInstanceMethod = MyClass.class.getMethod("getInstance", String.class);
+        Object test = getInstanceMethod.invoke(null, "Test");
+        System.out.println(ToStringBuilder.reflectionToString(test));
+
+        Method getStringListMethod = MyClass.class.getMethod("getStringList");
+        System.out.println(getStringListMethod.invoke(test, null));
+    }
+
+    @Test
+    public void privateField() throws Exception {
+        MyClass myClass = new MyClass("123");
+        Field privateStringField = MyClass.class.
+                getDeclaredField("privateString");
+        privateStringField.setAccessible(true);
+        String fieldValue = (String) privateStringField.get(myClass);
+        System.out.println("fieldValue = " + fieldValue);
+    }
 
     @Test
     public void testNonReflection() throws Exception {
